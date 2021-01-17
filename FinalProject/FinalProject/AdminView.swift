@@ -161,6 +161,7 @@ struct AdminView: View {
 
 
 
+
 struct AdminView_Previews: PreviewProvider {
     @ObservedObject static var screen = CurrentScreen()
     @ObservedObject static var user = userJWT()
