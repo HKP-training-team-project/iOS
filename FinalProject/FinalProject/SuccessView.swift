@@ -16,20 +16,20 @@ struct SuccessView: View {
                     .fill(Color.white)
                 VStack{
                     ZStack{
-                        customButton("",width: UIScreen.main.bounds.width, height: 200 ,color: Color.green)
+                        customButton("",width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 4 ,color: Color.green)
                         
                         /*
                         RoundedRectangle(cornerRadius: 25.0, style: .continuous)
                             .fill(Color.green)
                         */
-                        VStack{
+                        VStack {
                             ZStack{
                                 Circle()
                                     .fill(Color.white)
-                                    .frame(width: 60, height: 60, alignment: .top)
+                                    .frame(width: UIScreen.main.bounds.width / 32 * 5, height: UIScreen.main.bounds.width / 32 * 5, alignment: .top)
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.green)
-                                    .font(.system(size: 45))
+                                    .font(.system(size: UIScreen.main.bounds.width / 32 * 3))
                             }
                             .padding()
                             Spacer()
@@ -40,13 +40,13 @@ struct SuccessView: View {
                                 .foregroundColor(Color(#colorLiteral(red: 0.9998918176, green: 1, blue: 0.9998806119, alpha: 1)))
                                 .padding(.top)
                             Text("YOUR ORDER WAS SUCCESSFUL!")
-                                .font(.system(size: 20))
+                                .font(.system(size: UIScreen.main.bounds.width / 72 * 3))
                                 .bold()
                                 .foregroundColor(Color(#colorLiteral(red: 0.9998918176, green: 1, blue: 0.9998806119, alpha: 1)))
                             Text("tap anywhere to go back")
                         }
                     }
-                    .frame(width: UIScreen.main.bounds.width, height: 200, alignment: .center)
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 4, alignment: .center)
                     Spacer()
                 }
             }
