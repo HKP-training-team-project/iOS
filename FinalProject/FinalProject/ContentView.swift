@@ -23,7 +23,7 @@ struct ContentView: View {
         case 4:
             AdminView(screen: screen, user: user)
         case 5:
-            SuccessView()
+            SuccessView(screen: screen)
         default:
             LoginView(screen: screen, user: user)
         }
