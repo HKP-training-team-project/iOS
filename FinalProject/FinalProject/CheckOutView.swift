@@ -68,7 +68,9 @@ struct CheckOutView: View {
         customButton("Check Out",width: UIScreen.main.bounds.width / 2, color: Color(#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)))
             .onTapGesture {
                 print("attempting to checkout...")
-                
+                GETCheckout(user.JWT, user.userID) { (message) in
+                    print(message)
+                }
             }
         ForEach(cartitems.cart, id: \.self) { item in
             Text("\(item.itemname)")
