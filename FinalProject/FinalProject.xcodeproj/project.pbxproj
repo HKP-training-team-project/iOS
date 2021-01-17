@@ -20,6 +20,7 @@
 		401C250025AD750800EB5373 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C24FF25AD750800EB5373 /* SignupView.swift */; };
 		401C250325AD750F00EB5373 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C250225AD750F00EB5373 /* HelperFunctions.swift */; };
 		4040D2F225AE3DBF00E8A8D9 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4040D2F125AE3DBF00E8A8D9 /* ShopView.swift */; };
+		4075475825B4AE090034D6C1 /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4075475725B4AE090034D6C1 /* SuccessView.swift */; };
 		40DA236825B0B8DA0022F656 /* TESTACCOUNTS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DA236725B0B8DA0022F656 /* TESTACCOUNTS.swift */; };
 		40DA236B25B236970022F656 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DA236A25B236970022F656 /* ItemDetailView.swift */; };
 		40E64F2A25AE01E80013E1BD /* CheckOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E64F2925AE01E80013E1BD /* CheckOutView.swift */; };
@@ -42,6 +43,7 @@
 		401C24FF25AD750800EB5373 /* SignupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		401C250225AD750F00EB5373 /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
 		4040D2F125AE3DBF00E8A8D9 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+		4075475725B4AE090034D6C1 /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
 		40DA236725B0B8DA0022F656 /* TESTACCOUNTS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTACCOUNTS.swift; sourceTree = "<group>"; };
 		40DA236A25B236970022F656 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		40E64F2925AE01E80013E1BD /* CheckOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckOutView.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				401C250225AD750F00EB5373 /* HelperFunctions.swift */,
 				401C24F925AD74F200EB5373 /* Data.swift */,
 				40E64F2925AE01E80013E1BD /* CheckOutView.swift */,
+				4075475725B4AE090034D6C1 /* SuccessView.swift */,
 				40E64F2C25AE02100013E1BD /* AdminView.swift */,
 				401C24F625AD74DD00EB5373 /* CurrentScreen.swift */,
 				401C24E925AD735C00EB5373 /* Preview Content */,
@@ -185,6 +188,7 @@
 				401C24FA25AD74F200EB5373 /* Data.swift in Sources */,
 				401C24E125AD735C00EB5373 /* SceneDelegate.swift in Sources */,
 				401C250025AD750800EB5373 /* SignupView.swift in Sources */,
+				4075475825B4AE090034D6C1 /* SuccessView.swift in Sources */,
 				4040D2F225AE3DBF00E8A8D9 /* ShopView.swift in Sources */,
 				40DA236825B0B8DA0022F656 /* TESTACCOUNTS.swift in Sources */,
 				401C24E625AD735C00EB5373 /* FinalProject.xcdatamodeld in Sources */,

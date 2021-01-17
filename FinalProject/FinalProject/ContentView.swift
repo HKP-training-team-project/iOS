@@ -22,6 +22,8 @@ struct ContentView: View {
             CheckOutView(screen: screen, user: user)
         case 4:
             AdminView(screen: screen, user: user)
+        case 5:
+            SuccessView()
         default:
             LoginView(screen: screen, user: user)
         }

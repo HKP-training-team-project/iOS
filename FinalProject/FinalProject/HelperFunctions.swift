@@ -258,7 +258,7 @@ func POSTCart(_ token: String, id: String, itemname: String, price: Double, quan
     }.resume()
 }
 
-func GETCheckout(_ token: String, _ id: String, completion: @escaping (ResponseLogin) -> () ) {
+func GETCheckout(_ token: String, _ id: String, completion: @escaping (ResponseSignup) -> () ) {
     let link = "https://hkp-training-teamprj.herokuapp.com/users/\(id)/cart-items/checkout"
     guard let url = URL(string: link) else { return }
     var request = URLRequest(url: url)
@@ -276,7 +276,7 @@ func GETCheckout(_ token: String, _ id: String, completion: @escaping (ResponseL
         if let decoded = try? JSONDecoder().decode(ResponseSignup.self, from: data) {
             print(decoded.message)
             DispatchQueue.main.async {
-               // completion(decoded.message)
+                completion(decoded)
             }
         }
     }.resume()

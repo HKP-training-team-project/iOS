@@ -13,9 +13,6 @@ struct LoginView: View {
     @State var email    = ""
     @State var password = ""
     @State var secure   = true
-    @State var showingAler = false
-    @State var alertTitle  = ""
-    @State var alertMessage = ""
     
     var body: some View {
         VStack(alignment: .center, spacing: UIScreen.main.bounds.height / 256) {

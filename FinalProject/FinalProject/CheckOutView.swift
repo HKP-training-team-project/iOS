@@ -10,7 +10,7 @@ struct CheckOutView: View {
     @ObservedObject var screen: CurrentScreen
     @ObservedObject var user: userJWT
     @State var cartitems = CartItems()
-  
+    
     func start() {
         GETCart(user.JWT, user.userID, completion: { _ in })
     }
@@ -69,7 +69,7 @@ struct CheckOutView: View {
             .onTapGesture {
                 print("attempting to checkout...")
                 GETCheckout(user.JWT, user.userID) { (message) in
-                    print(message)
+                    screen.currentScreen = 5
                 }
             }
         ForEach(cartitems.cart, id: \.self) { item in
