@@ -10,12 +10,13 @@ struct CheckOutView: View {
     @ObservedObject var screen: CurrentScreen
     @ObservedObject var user: userJWT
     @State var cartitems = CartItems()
+    @State var dataValues = [String: [Any]]()
     
     func start() {
         GETCart(user.JWT, user.userID, completion: { _ in })
     }
-  
-    func GETCart(_ token: String, _ id: String, completion: @escaping (CartItems) -> () ) {
+    
+    func GETCart(_ token: String, _ id: String, completion: @escaping (ResponseLogin) -> () ) {
         let link = "https://hkp-training-teamprj.herokuapp.com/users/\(id)/cart-items"
         guard let url = URL(string: link) else { return }
         var request = URLRequest(url: url)
@@ -31,18 +32,45 @@ struct CheckOutView: View {
             print("attempting to decode")
             print("\(link)")
             print(data)
-            if let decoded = try? JSONDecoder().decode(CartItems.self, from: data) {
-                print("\n \n \n \n \n \n Inside decoded \n \n \n \n \n \n ")
-                //print(decoded.message)
-                cartitems = decoded
-                for item in cartitems.cart {
-                    print(item.itemname)
+            var json = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+            dataValues["_id"] = []
+            dataValues["itemId"] = []
+            dataValues["itemname"] = []
+            dataValues["price"] = []
+            dataValues["quantity"] = []
+            dataValues["total"] = []
+            print(json["items"] ?? "")
+            
+            var count = 0
+            while "\(String(describing: json["items"]!))".contains("total") {
+                switch count%6 {
+                case 0:
+                    dataValues["_id"]!.append("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)])
+                case 1:
+                    dataValues["itemId"]!.append("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)])
+                case 2:
+                    dataValues["itemname"]!.append("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)])
+                case 3:
+                    dataValues["price"]!.append(Double("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)]) ?? 0)
+                case 4:
+                    dataValues["quantity"]!.append(Double("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)]) ?? 0)
+                default:
+                    dataValues["total"]!.append(Double("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)]) ?? 0)
                 }
-                DispatchQueue.main.async {
-                    // completion(decoded)
-                }
+                json["items"] = "\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index(after: "\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".startIndex))..<"\(String(describing: json["items"]!))".endIndex]
+                count += 1
             }
+            // print(json["items"] ?? "")
+            print(dataValues)
         }.resume()
+    }
+    
+    func getArray(_ array: [Any]) -> [String] {
+        var list = [String]()
+        for element in array {
+            list.append("\(element)")
+        }
+        return list
     }
     
     var body: some View {
@@ -56,11 +84,10 @@ struct CheckOutView: View {
                 Spacer()
             }
             Text("\(user.userID)")
-            ForEach(cartitems.cart, id: \.self) { item in
+            ForEach(getArray(dataValues["itemname"] ?? []), id: \.self) { item in
                 HStack{
-                    Text("\(item.itemname)")
-                    Spacer()
-                    Text("\(item.quantity)")
+                    
+                    Text("\(item)")
                 }
             }
             Spacer()
@@ -76,6 +103,6 @@ struct CheckOutView: View {
             Text("\(item.itemname)")
         }
         Spacer()
-            .onAppear(perform: start)
+        .onAppear(perform: start)
     }
 }
