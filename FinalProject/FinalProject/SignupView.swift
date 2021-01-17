@@ -64,95 +64,100 @@ struct SignupView: View {
     
     var body: some View {
         // VStack with the user's contents
-        VStack(alignment: .center) {
-            HStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 25)
-                        .stroke(Color.black, lineWidth: 1)
-                        .frame(width: UIScreen.main.bounds.width / 32 * 11, height: UIScreen.main.bounds.height / 24)
-                    TextField("Username: ", text: $username)
-                        .autocapitalization(.none)
-                        .font(.system(size: 16))
-                        .multilineTextAlignment(.leading)
-                        .frame(width: UIScreen.main.bounds.width / 32 * 9, height: UIScreen.main.bounds.height / 24)
-                }
-                Spacer()
-            }
-            .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
-            
-            // username tab
+        VStack(alignment: .center, spacing: UIScreen.main.bounds.height / 64) {
             ZStack {
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(Color.black, lineWidth: 1)
+                customButton("", width: UIScreen.main.bounds.width / 8 * 7, height: UIScreen.main.bounds.height / 8 * 2, color: Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+                VStack {
+                    HStack {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 25)
+                                .stroke(Color.black, lineWidth: 1)
+                                .frame(width: UIScreen.main.bounds.width / 32 * 11, height: UIScreen.main.bounds.height / 24)
+                            TextField("Username: ", text: $username)
+                                .autocapitalization(.none)
+                                .font(.system(size: 16))
+                                .multilineTextAlignment(.leading)
+                                .frame(width: UIScreen.main.bounds.width / 32 * 9, height: UIScreen.main.bounds.height / 24)
+                        }
+                        Spacer()
+                    }
                     .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
-                // current state of the user's username
-                HStack {
-                    TextField("Email: ", text: $email)
-                        .autocapitalization(.none)
-                        .font(.system(size: 16))
-                        .multilineTextAlignment(.leading)
-                        .frame(width: UIScreen.main.bounds.width / 16 * 9, height: UIScreen.main.bounds.height / 24)
-                    Spacer()
                     
-                }
-                .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
-            }
-            
-            // password tab
-            ZStack {
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(Color.black, lineWidth: 1)
-                    .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
-                HStack {
-                    SecureField("Password: ", text: $password)
-                        .autocapitalization(.none)
-                        .font(.system(size: 16))
-                        .multilineTextAlignment(.leading)
-                        .frame(width: UIScreen.main.bounds.width / 16 * 9, height: UIScreen.main.bounds.height / 24)
-                    Spacer()
-                }
-                .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
-            }
-            
-            // confirm password tab
-            ZStack {
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(Color.black, lineWidth: 1)
-                    .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
-                // HStack to switch between SecureField and TextField
-                HStack {
-                    if secure {
-                        SecureField("Confirm Password: ", text: $confirmPassword)
-                            .autocapitalization(.none)
-                            .font(.system(size: 16))
-                            .multilineTextAlignment(.leading)
-                            .frame(width: UIScreen.main.bounds.width / 64 * 33, height: UIScreen.main.bounds.height / 24)
-                        Spacer()
-                        Image(systemName: "eye.fill")
-                            .foregroundColor(Color.black)
-                            .onTapGesture {
-                                withAnimation {
-                                    secure.toggle()
-                                }
-                            }
+                    // username tab
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 25)
+                            .stroke(Color.black, lineWidth: 1)
+                            .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
+                        // current state of the user's username
+                        HStack {
+                            TextField("Email: ", text: $email)
+                                .autocapitalization(.none)
+                                .font(.system(size: 16))
+                                .multilineTextAlignment(.leading)
+                                .frame(width: UIScreen.main.bounds.width / 16 * 9, height: UIScreen.main.bounds.height / 24)
+                            Spacer()
+                            
+                        }
+                        .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
                     }
-                    else {
-                        TextField("Confirm Password: ", text: $confirmPassword)
-                            .autocapitalization(.none)
-                            .font(.system(size: 16))
-                            .multilineTextAlignment(.leading)
-                            .frame(width: UIScreen.main.bounds.width / 64 * 33, height: UIScreen.main.bounds.height / 24)
-                        Spacer()
-                        Image(systemName: "eye.slash.fill")
-                            .foregroundColor(Color.black)
-                            .onTapGesture {
-                                withAnimation {
-                                    secure.toggle()
-                                }
+                    
+                    // password tab
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 25)
+                            .stroke(Color.black, lineWidth: 1)
+                            .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
+                        HStack {
+                            SecureField("Password: ", text: $password)
+                                .autocapitalization(.none)
+                                .font(.system(size: 16))
+                                .multilineTextAlignment(.leading)
+                                .frame(width: UIScreen.main.bounds.width / 16 * 9, height: UIScreen.main.bounds.height / 24)
+                            Spacer()
+                        }
+                        .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
+                    }
+                    
+                    // confirm password tab
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 25)
+                            .stroke(Color.black, lineWidth: 1)
+                            .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
+                        // HStack to switch between SecureField and TextField
+                        HStack {
+                            if secure {
+                                SecureField("Confirm Password: ", text: $confirmPassword)
+                                    .autocapitalization(.none)
+                                    .font(.system(size: 16))
+                                    .multilineTextAlignment(.leading)
+                                    .frame(width: UIScreen.main.bounds.width / 64 * 33, height: UIScreen.main.bounds.height / 24)
+                                Spacer()
+                                Image(systemName: "eye.fill")
+                                    .foregroundColor(Color.black)
+                                    .onTapGesture {
+                                        withAnimation {
+                                            secure.toggle()
+                                        }
+                                    }
                             }
+                            else {
+                                TextField("Confirm Password: ", text: $confirmPassword)
+                                    .autocapitalization(.none)
+                                    .font(.system(size: 16))
+                                    .multilineTextAlignment(.leading)
+                                    .frame(width: UIScreen.main.bounds.width / 64 * 33, height: UIScreen.main.bounds.height / 24)
+                                Spacer()
+                                Image(systemName: "eye.slash.fill")
+                                    .foregroundColor(Color.black)
+                                    .onTapGesture {
+                                        withAnimation {
+                                            secure.toggle()
+                                        }
+                                    }
+                            }
+                        }
+                        .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
                     }
                 }
-                .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
             }
             
             // HStack for the user's next steps
