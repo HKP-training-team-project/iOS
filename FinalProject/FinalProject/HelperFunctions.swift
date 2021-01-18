@@ -89,10 +89,8 @@ func login(email: String, password: String, completion: @escaping (ResponseLogin
     let requestBody = NSMutableData(data: jsonBody.data(using: String.Encoding.utf8)!)
     request.httpBody = requestBody as Data
     URLSession.shared.dataTask(with: request) { data, response, error in
-        print(response!)
         guard let data = data else { return }
         if let decoded = try? JSONDecoder().decode(ResponseLogin.self, from: data) {
-            print(decoded)
             DispatchQueue.main.async {
                 completion(decoded)
             }
@@ -113,10 +111,8 @@ func signup(username: String, email: String, password: String, confirmPassword: 
     let requestBody = NSMutableData(data: jsonBody.data(using: String.Encoding.utf8)!)
     request.httpBody = requestBody as Data
     URLSession.shared.dataTask(with: request) { data, response, error in
-        print(response!)
         guard let data = data else { return }
         if let decoded = try? JSONDecoder().decode(ResponseSignup.self, from: data) {
-            print(decoded)
             DispatchQueue.main.async {
                 completion(decoded.message)
             }
@@ -141,12 +137,8 @@ func login1(email: String, password: String, completion: @escaping (ResponseLogi
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
     URLSession.shared.dataTask(with: request) { data, response, error in
-        print(response)
         guard let data = data else { return }
         if let decoded = try? JSONDecoder().decode(ResponseLogin.self, from: data) {
-            print(decoded)
-            print("USERID HERE")
-            print("\(decoded.user.id)")
             DispatchQueue.main.async {
                 completion(decoded)
             }
@@ -188,16 +180,12 @@ func POSTItems(_ token: String, _ itemname: String, _ price: String, _ descripti
     }
     jsonBody.appendString("--\(boundary)--\(lineBreak)")
     let str = String(decoding: jsonBody, as: UTF8.self)
-    print(str)
     request.httpBody = jsonBody
     request.setValue(String(jsonBody.count), forHTTPHeaderField: "Content-Length")
     URLSession.shared.dataTask(with: request) { data, response, error in
-        print(response!)
         guard let data = data else { return }
         let str2 = String(decoding: data, as: UTF8.self)
-        print(str2)
         if let decoded = try? JSONDecoder().decode(ResponseSignup.self, from: data) {
-            print(decoded)
             DispatchQueue.main.async {
                 completion(decoded.message)
             }
@@ -212,10 +200,8 @@ func DELETEItem(_ token: String, _ id: String, completion: @escaping (String) ->
     request.httpMethod = "DELETE"
     request.setValue("\(token)", forHTTPHeaderField: "Authorization")
     URLSession.shared.dataTask(with: request) { data, response, error in
-        print(response!)
         guard let data = data else { return }
         if let decoded = try? JSONDecoder().decode(ResponseDelete.self, from: data) {
-            print(decoded.message)
             DispatchQueue.main.async {
                 completion(decoded.message)
             }
@@ -247,11 +233,8 @@ func POSTCart(_ token: String, id: String, itemname: String, price: Double, quan
     let requestBody = NSMutableData(data: jsonBody.data(using: String.Encoding.utf8)!)
     request.httpBody = requestBody as Data
     URLSession.shared.dataTask(with: request) { data, response, error in
-        print(response!)
         guard let data = data else { return }
-        print("https://hkp-training-teamprj.herokuapp.com/users/\(token)/cart-items")
         if let decoded = try? JSONDecoder().decode(ResponseSignup.self, from: data) {
-            print(decoded)
             DispatchQueue.main.async {
                 completion(decoded.message)
             }
@@ -269,13 +252,8 @@ func GETCheckout(_ token: String, _ id: String, completion: @escaping (ResponseS
         "Authorization": "\(token)"
     ]
     URLSession.shared.dataTask(with: request) { data, response, error in
-        print("\n \n \n \n \n \n \n \n \n \n ")
-        print(response!)
         guard let data = data else { return }
-        print("attempting to decode")
-        print("\(link)")
         if let decoded = try? JSONDecoder().decode(ResponseSignup.self, from: data) {
-            print(decoded.message)
             DispatchQueue.main.async {
                 completion(decoded)
             }
@@ -293,10 +271,8 @@ func DELETECart(_ token: String, _ id: String, _ itemId: String, completion: @es
         "Authorization": "\(token)}"
     ]
     URLSession.shared.dataTask(with: request) { data, response, error in
-        print(response!)
         guard let data = data else { return }
         if let decoded = try? JSONDecoder().decode(ResponseDelete.self, from: data) {
-            print(decoded.message)
             DispatchQueue.main.async {
                 completion(decoded.message)
             }

@@ -31,14 +31,9 @@ struct AdminView: View {
         request.httpMethod = "GET"
         request.setValue("\(jwt)", forHTTPHeaderField: "Authorization")
         URLSession.shared.dataTask(with: request) { data, response, error in
-            print(response!)
-            print(data!)
             guard let data = data else { return }
             if let decoded = try? JSONDecoder().decode(Items.self, from: data) {
                 items = decoded
-                for item in items.items {
-                    print(item.itemname)
-                }
             }
             
         }.resume()
@@ -97,14 +92,12 @@ struct AdminView: View {
                 .onTapGesture {
                     if (!itemName.isEmpty && !itemPrice.isEmpty) {
                         POSTItems(user.JWT, self.itemName, self.itemPrice, self.itemDesc, self.itemCat, self.itemPics) { (message) in
-                            print("items added")
                             alertMessage = "Successfully added item"
                             showingAlert.toggle()
                             start()
                         }
                     }
                     else {
-                        print("could not add item")
                         alertMessage = "Please fill in the blanks"
                         showingAlert.toggle()
                     }

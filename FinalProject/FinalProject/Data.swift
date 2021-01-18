@@ -110,3 +110,9 @@ struct Item: Codable, Hashable {
         self.v = 0
     }
 }
+
+class passItem: ObservableObject {
+    @Published var item: Item
+    
+    init() { item = Item() }
+}

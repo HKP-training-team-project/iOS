@@ -12,7 +12,6 @@ struct CheckOutView: View {
     @State var cartitems = CartItems()
     @State var dataValues = [String: [Any]]()
     
-    
     func start() {
         GETCart(user.JWT, user.userID, completion: { _ in })
     }
@@ -75,6 +74,13 @@ struct CheckOutView: View {
         return list
     }
     
+    func getFinalTotal() -> Double {
+        var final: Double = 0
+        for element in dataValues["total"] ?? [] {
+            final += (Double("\(element)")) ?? 0
+        }
+        return final
+    }
     
     var body: some View {
         VStack(spacing: UIScreen.main.bounds.height / 64) {
@@ -108,7 +114,7 @@ struct CheckOutView: View {
                     VStack(spacing: UIScreen.main.bounds.height / 64) {
                         ForEach(getDoubleArray(dataValues["quantity"] ?? []), id: \.self) { item in
                             Text("Quantity: \(item, specifier: "%.0f")")
-                                .offset(x: UIScreen.main.bounds.width / 30 * 10)
+                                .offset(x: UIScreen.main.bounds.width / 30 * 12)
                         }
                     }
                     Spacer()
@@ -126,13 +132,13 @@ struct CheckOutView: View {
             }
             Spacer()
         }
-        customButton("Total:")
+        
+        customButton("Total: $\(String(format: "%.2f", getFinalTotal()))", width: UIScreen.main.bounds.width / 2, height: UIScreen.main.bounds.height / 24, color: Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
             .padding()
             Spacer()
         
-        customButton("Check Out",width: UIScreen.main.bounds.width / 2, color: Color(#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)))
+        customButton("Check Out", width: UIScreen.main.bounds.width / 2, height:  UIScreen.main.bounds.height / 24, color: Color(#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)))
             .onLongPressGesture {
-                print("attempting to checkout...")
                 for id in getStringArray(dataValues["itemId"] ?? []) {
                     DELETECart(user.JWT, user.userID, id, completion: { _ in })
                 }

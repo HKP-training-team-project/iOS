@@ -11,6 +11,7 @@ struct ShopView: View {
     @ObservedObject var screen: CurrentScreen
     @ObservedObject var user: userJWT
     @State var items = Items()
+    @ObservedObject var pass: passItem
     
     func start() {
         GETItems(jwt: user.JWT, completion: { _ in })
@@ -23,14 +24,9 @@ struct ShopView: View {
         request.httpMethod = "GET"
         request.setValue("\(jwt)", forHTTPHeaderField: "Authorization")
         URLSession.shared.dataTask(with: request) { data, response, error in
-            print(response!)
-            print(data!)
             guard let data = data else { return }
             if let decoded = try? JSONDecoder().decode(Items.self, from: data) {
                 items = decoded
-                for item in items.items {
-                    print(item.itemname)
-                }
                 DispatchQueue.main.async {
                     // completion(decoded.items[0].id)
                 }
@@ -51,16 +47,16 @@ struct ShopView: View {
                 VStack {
                     Form {
                         ForEach(items.items, id: \.self) { item in
-                            NavigationLink(
-                                destination: ItemDetailView(user: user, item:item),
-                                label: {
-                                    HStack{
-                                        Text(item.itemname)
-                                        Spacer()
-                                        Text("$\(item.price, specifier: "%.2f")")
+                            HStack {
+                                Text(item.itemname)
+                                Spacer()
+                                Text("$\(item.price, specifier: "%.2f")")
+                                Image(systemName: "chevron.right")
+                                    .onTapGesture {
+                                        pass.item = item
+                                        screen.currentScreen = 6
                                     }
-                                }
-                            )
+                            }
                         }
                     }
                 }

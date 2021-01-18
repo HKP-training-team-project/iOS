@@ -172,7 +172,7 @@ struct SignupView: View {
                     .onTapGesture {
                         if (verifyPassword()){
                             signup(username: username, email: email , password: password, confirmPassword: confirmPassword) { (message) in
-                                alertMessage = message.description
+                                alertMessage = "Successfully signed up"
                                 showingAlertSignUp.toggle()
                             }
                         }
