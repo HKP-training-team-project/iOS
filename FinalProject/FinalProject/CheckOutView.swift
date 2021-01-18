@@ -11,21 +11,9 @@ struct CheckOutView: View {
     @ObservedObject var user: userJWT
     @State var cartitems = CartItems()
     @State var dataValues = [String: [Any]]()
-    @State var ids = [String]()
-    @State var itemids = [String]()
-    @State var itemnames = [String]()
-    @State var prices = [Double]()
-    @State var quantities = [Double]()
-    @State var totals = [Double]()
     
     func start() {
         GETCart(user.JWT, user.userID, completion: { _ in })
-        ids = self.getStringArray(dataValues["_id"] ?? [])
-        itemids = self.getStringArray(dataValues["itemids"] ?? [])
-        itemnames = self.getStringArray(dataValues["itemnames"] ?? [])
-        prices = self.getDoubleArray(dataValues["price"] ?? [])
-        quantities = self.getDoubleArray(dataValues["quantity"] ?? [])
-        totals = self.getDoubleArray(dataValues["total"] ?? [])
     }
     
     func GETCart(_ token: String, _ id: String, completion: @escaping (ResponseLogin) -> () ) {
@@ -37,12 +25,7 @@ struct CheckOutView: View {
             "Authorization": "\(token)"
         ]
         URLSession.shared.dataTask(with: request) { data, response, error in
-            print("\n \n \n \n \n \n \n \n \n \n ")
-            print(response!)
             guard let data = data else { return }
-            print("attempting to decode")
-            print("\(link)")
-            print(data)
             var json = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
             dataValues["_id"] = []
             dataValues["itemId"] = []
@@ -50,7 +33,6 @@ struct CheckOutView: View {
             dataValues["price"] = []
             dataValues["quantity"] = []
             dataValues["total"] = []
-            print(json["items"] ?? "")
             
             var count = 0
             while "\(String(describing: json["items"]!))".contains("total") {
@@ -71,7 +53,6 @@ struct CheckOutView: View {
                 json["items"] = "\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index(after: "\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".startIndex))..<"\(String(describing: json["items"]!))".endIndex]
                 count += 1
             }
-            print(dataValues)
         }.resume()
     }
     
@@ -89,16 +70,6 @@ struct CheckOutView: View {
             list.append(Double("\(element)") ?? 0)
         }
         return list
-    }
-
-    func getDict(_ list1: [String], _ list2: [Double]) -> [String: Double] {
-        var dict = [String: Double]()
-        while list1.count > 0 {
-            for index in 0..<list1.count {
-                dict[list1[index]] = list2[index]
-            }
-        }
-        return dict
     }
     
     var body: some View {
@@ -118,26 +89,43 @@ struct CheckOutView: View {
                     .offset(x: UIScreen.main.bounds.width / 64 * 3)
                 Spacer()
             }
-            Form {
-                ForEach(getDict(getStringArray(dataValues["itemname"] ?? []), getDoubleArray(dataValues["total"] ?? [])).sorted(by: <), id: \.key) { key, value in
-                    HStack {
-                        Text("\(key)")
-                        Spacer()
-                        Text("$\(value, specifier: "%.2f")")
+            ZStack {
+                customButton("", width: UIScreen.main.bounds.width / 8 * 7, height: UIScreen.main.bounds.height / 20 * CGFloat(getStringArray(dataValues["itemname"] ?? []).count), color: Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+                HStack(alignment: .top) {
+                    VStack(spacing: UIScreen.main.bounds.height / 64) {
+                        ForEach(getStringArray(dataValues["itemname"] ?? []), id: \.self) { item in
+                            Text(item)
+                                .offset(x: UIScreen.main.bounds.width / 64 * 6)
+                        }
+                    }
+                    Spacer()
+                }
+                HStack(alignment: .top) {
+                    Spacer()
+                    VStack(spacing: UIScreen.main.bounds.height / 64) {
+                        ForEach(getDoubleArray(dataValues["total"] ?? []), id: \.self) { item in
+                            Text("$\(item, specifier: "%.2f")")
+                                .offset(x: UIScreen.main.bounds.width / 64 * -6)
+                        }
                     }
                 }
-                
             }
+            Spacer()
         }
-        Spacer()
+        
         customButton("Check Out",width: UIScreen.main.bounds.width / 2, color: Color(#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)))
             .onLongPressGesture {
                 print("attempting to checkout...")
-                GETCheckout(user.JWT, user.userID) { (message) in
-                    screen.currentScreen = 5
+                for id in getStringArray(dataValues["itemId"] ?? []) {
+                    DELETECart(user.JWT, user.userID, id, completion: { _ in })
+                }
+                GETCheckout(user.JWT, user.userID) { _ in
+                    withAnimation {
+                        screen.currentScreen = 5
+                    }
                 }
             }
-            .offset(y: UIScreen.main.bounds.height / 64)
+            .offset(y: UIScreen.main.bounds.height / -64)
         Spacer()
         .onAppear(perform: start)
     }

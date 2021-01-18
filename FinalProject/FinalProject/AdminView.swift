@@ -117,9 +117,7 @@ struct AdminView: View {
                         Spacer()
                         whiteButton("Remove", width: UIScreen.main.bounds.width / 5, height: UIScreen.main.bounds.height / 36)
                             .onTapGesture {
-                                print("\n \n \n deleting ... \n \n \n")
                                 DELETEItem(user.JWT, item.id) { (message) in }
-                                print("deleted!")
                                 alertMessage = "Item deleted"
                                 showingAlert.toggle()
                                 start()

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SuccessView: View {
     @ObservedObject var screen: CurrentScreen
+    
+    
     var body: some View {
         VStack {
             ZStack {
@@ -16,7 +18,7 @@ struct SuccessView: View {
                     .fill(Color.white)
                 VStack {
                     ZStack {
-                        customButton("",width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 4 ,color: Color.green)
+                        customButton("",width: UIScreen.main.bounds.width / 8 * 7, height: UIScreen.main.bounds.height / 4 ,color: Color.green)
                         VStack {
                             ZStack {
                                 Circle()
@@ -45,7 +47,6 @@ struct SuccessView: View {
                     Spacer()
                 }
             }
-            
         }
         .onTapGesture {
             screen.currentScreen = 2

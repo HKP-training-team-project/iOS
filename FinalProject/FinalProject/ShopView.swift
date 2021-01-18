@@ -50,7 +50,6 @@ struct ShopView: View {
                 }
                 VStack {
                     Form {
-                        Text("Your ID is: \(user.userID)")
                         ForEach(items.items, id: \.self) { item in
                             NavigationLink(
                                 destination: ItemDetailView(user: user, item:item),

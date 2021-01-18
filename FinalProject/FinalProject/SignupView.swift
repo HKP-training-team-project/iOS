@@ -184,7 +184,7 @@ struct SignupView: View {
             }
             .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 36)
             .alert(isPresented: $showingAlertSignUp){
-                Alert(title: Text(alertMessage), message: nil, dismissButton: .default(Text("OK")))
+                Alert(title: Text(alertMessage), message: nil, dismissButton: .default(Text("Dismiss")))
             }
         }
     }
