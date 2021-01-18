@@ -11,9 +11,21 @@ struct CheckOutView: View {
     @ObservedObject var user: userJWT
     @State var cartitems = CartItems()
     @State var dataValues = [String: [Any]]()
+    @State var ids = [String]()
+    @State var itemids = [String]()
+    @State var itemnames = [String]()
+    @State var prices = [Double]()
+    @State var quantities = [Double]()
+    @State var totals = [Double]()
     
     func start() {
         GETCart(user.JWT, user.userID, completion: { _ in })
+        ids = self.getStringArray(dataValues["_id"] ?? [])
+        itemids = self.getStringArray(dataValues["itemids"] ?? [])
+        itemnames = self.getStringArray(dataValues["itemnames"] ?? [])
+        prices = self.getDoubleArray(dataValues["price"] ?? [])
+        quantities = self.getDoubleArray(dataValues["quantity"] ?? [])
+        totals = self.getDoubleArray(dataValues["total"] ?? [])
     }
     
     func GETCart(_ token: String, _ id: String, completion: @escaping (ResponseLogin) -> () ) {
@@ -22,7 +34,6 @@ struct CheckOutView: View {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = [
-            // "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "\(token)"
         ]
         URLSession.shared.dataTask(with: request) { data, response, error in
@@ -60,12 +71,11 @@ struct CheckOutView: View {
                 json["items"] = "\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index(after: "\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".startIndex))..<"\(String(describing: json["items"]!))".endIndex]
                 count += 1
             }
-            // print(json["items"] ?? "")
             print(dataValues)
         }.resume()
     }
     
-    func getArray(_ array: [Any]) -> [String] {
+    func getStringArray(_ array: [Any]) -> [String] {
         var list = [String]()
         for element in array {
             list.append("\(element)")
@@ -73,25 +83,43 @@ struct CheckOutView: View {
         return list
     }
     
+    func getDoubleArray(_ array: [Any]) -> [Double] {
+        var list = [Double]()
+        for element in array {
+            list.append(Double("\(element)") ?? 0)
+        }
+        return list
+    }
+
+    
     var body: some View {
-        VStack {
+        VStack(spacing: UIScreen.main.bounds.height / 64) {
             HStack {
                 Image(systemName: "chevron.left")
-                    .padding()
                     .onTapGesture {
                         screen.currentScreen = 2
                     }
+                    .offset(x: UIScreen.main.bounds.width / 64 * 3)
                 Spacer()
             }
-            Text("\(user.userID)")
-            ForEach(getArray(dataValues["itemname"] ?? []), id: \.self) { item in
-                HStack{
-                    
-                    Text("\(item)")
+            HStack {
+                Text("Checkout")
+                    .font(.system(size: UIScreen.main.bounds.height / 128 * 5))
+                    .fontWeight(.bold)
+                    .offset(x: UIScreen.main.bounds.width / 64 * 3)
+                Spacer()
+            }
+            Form {
+                ForEach(0..<getStringArray(dataValues["itemname"] ?? []).count) { index in
+                    HStack {
+                        Text(getStringArray(dataValues["itemname"] ?? [])[index])
+                        Spacer()
+                        Text("$\(getDoubleArray(dataValues["total"] ?? [])[index], specifier: "%.2f")")
+                    }
                 }
             }
-            Spacer()
         }
+        Spacer()
         customButton("Check Out",width: UIScreen.main.bounds.width / 2, color: Color(#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)))
             .onLongPressGesture {
                 print("attempting to checkout...")
@@ -99,9 +127,7 @@ struct CheckOutView: View {
                     screen.currentScreen = 5
                 }
             }
-        ForEach(cartitems.cart, id: \.self) { item in
-            Text("\(item.itemname)")
-        }
+            .offset(y: UIScreen.main.bounds.height / 64)
         Spacer()
         .onAppear(perform: start)
     }

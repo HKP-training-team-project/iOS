@@ -56,7 +56,7 @@ struct ShopView: View {
                         Text("Your ID is: \(user.userID)")
                         ForEach(items.items, id: \.self) { item in
                             NavigationLink(
-                                destination: ItemDetailView(user: user, item:item ),
+                                destination: ItemDetailView(user: user, item:item),
                                 label: {
                                     HStack{
                                         Text(item.itemname)

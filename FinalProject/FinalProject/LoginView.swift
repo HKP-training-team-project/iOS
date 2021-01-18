@@ -15,7 +15,7 @@ struct LoginView: View {
     @State var secure   = true
     
     var body: some View {
-        VStack(alignment: .center, spacing: UIScreen.main.bounds.height / 256) {
+        VStack(alignment: .center, spacing: UIScreen.main.bounds.height / 512 * 3) {
             ZStack{
                 customButton("", width: UIScreen.main.bounds.width / 8 * 7, height: UIScreen.main.bounds.height / 8 * 2, color: Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
                 VStack {

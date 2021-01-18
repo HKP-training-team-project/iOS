@@ -282,4 +282,23 @@ func GETCheckout(_ token: String, _ id: String, completion: @escaping (ResponseS
     }.resume()
 }
 
-
+func DELETECart(_ token: String, _ id: String, _ itemId: String, completion: @escaping (String) -> () ) {
+    let link = "https://hkp-training-teamprj.herokuapp.com/users/\(id)/cart-items/\(itemId)"
+    guard let url = URL(string: link) else { return }
+    var request = URLRequest(url: url)
+    request.httpMethod = "DELETE"
+    request.allHTTPHeaderFields = [
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "\(token)}"
+    ]
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        print(response!)
+        guard let data = data else { return }
+        if let decoded = try? JSONDecoder().decode(ResponseDelete.self, from: data) {
+            print(decoded.message)
+            DispatchQueue.main.async {
+                completion(decoded.message)
+            }
+        }
+    }.resume()
+}
