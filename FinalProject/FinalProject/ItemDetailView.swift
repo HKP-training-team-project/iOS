@@ -26,8 +26,8 @@ struct ItemDetailView: View {
             Spacer()
         }
         .navigationBarTitle("\(item.itemname)", displayMode: .inline)
-        .navigationBarItems(leading:
-            whiteButton("Add to cart")
+        .navigationBarItems(trailing:
+            customButton("Add to cart", width: UIScreen.main.bounds.width / 4)
                 .onTapGesture {
                     print("Attempting to add to cart")
                     
