@@ -94,7 +94,9 @@ struct CheckOutView: View {
     func getDict(_ list1: [String], _ list2: [Double]) -> [String: Double] {
         var dict = [String: Double]()
         for index in 0..<list1.count {
-            dict[list1[index]] = list2[index]
+            if index > 0 {
+                dict[list1[index]] = list2[index]
+            }
         }
         return dict
     }
@@ -117,16 +119,14 @@ struct CheckOutView: View {
                 Spacer()
             }
             Form {
-                ForEach(getDict(getStringArray(dataValues["itemname"] ?? []), getDoubleArray(dataValues["total"] ?? [])) {
-                    
-                }
-                ForEach(0..<getStringArray(dataValues["itemname"] ?? []).count, id: \.self) { index in
+                ForEach(getDict(getStringArray(dataValues["itemname"] ?? []), getDoubleArray(dataValues["total"] ?? [])).sorted(by: <), id: \.key) { key, value in
                     HStack {
-                        Text(getStringArray(dataValues["itemname"] ?? [])[index])
+                        Text("\(key)")
                         Spacer()
-                        Text("$\(getDoubleArray(dataValues["total"] ?? [])[index], specifier: "%.2f")")
+                        Text("$\(value, specifier: "%.2f")")
                     }
                 }
+                
             }
         }
         Spacer()

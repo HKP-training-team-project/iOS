@@ -61,7 +61,7 @@ struct ShopView: View {
                                     HStack{
                                         Text(item.itemname)
                                         Spacer()
-                                        Text("$\(item.price , specifier: "%.2f")")
+                                        Text("$\(item.price, specifier: "%.2f")")
                                     }
                                 })
                         }

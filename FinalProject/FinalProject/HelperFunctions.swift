@@ -159,7 +159,7 @@ func POSTItems(_ token: String, _ itemname: String, _ price: String, _ descripti
     let link = "https://hkp-training-teamprj.herokuapp.com/items"
     guard let url = URL(string: link) else { return }
     var request = URLRequest(url: url)
-    let boundary = "Boundary-\(token)"
+    let boundary = "myboundary"
     let lineBreak = "\r\n"
     let header = [
         "Content-Type": "multipart/form-data; boundary=\(boundary)",
@@ -169,32 +169,33 @@ func POSTItems(_ token: String, _ itemname: String, _ price: String, _ descripti
     request.httpMethod = "POST"
     var jsonBody = Data()
     jsonBody.appendString("--\(boundary + lineBreak)")
-    jsonBody.appendString("Content-Disposition: form-data; itemname\(itemname + lineBreak)")
-    jsonBody.appendString(lineBreak)
-    jsonBody.appendString(itemname)
+    jsonBody.appendString("Content-Disposition: form-data; name=\"itemname\"\r\n\r\n")
+    jsonBody.appendString("\(itemname)\r\n")
     jsonBody.appendString("--\(boundary + lineBreak)")
-    jsonBody.appendString("Content-Disposition: form-data; price\(price + lineBreak)")
-    jsonBody.appendString(lineBreak)
-    jsonBody.appendString(price)
+    jsonBody.appendString("Content-Disposition: form-data; name=\"price\"\r\n\r\n")
+    jsonBody.appendString("\(price)\r\n")
     jsonBody.appendString("--\(boundary + lineBreak)")
-    jsonBody.appendString("Content-Disposition: form-data; description\(description + lineBreak)")
-    jsonBody.appendString(lineBreak)
-    jsonBody.appendString(description)
+    jsonBody.appendString("Content-Disposition: form-data; name=\"description\"\r\n\r\n")
+    jsonBody.appendString("\(description)\r\n")
     jsonBody.appendString("--\(boundary + lineBreak)")
-    jsonBody.appendString("Content-Disposition: form-data; category\(category + lineBreak)")
-    jsonBody.appendString(lineBreak)
-    jsonBody.appendString(category)
+    jsonBody.appendString("Content-Disposition: form-data; name=\"category\"\r\n\r\n")
+    jsonBody.appendString("\(category)\r\n")
     for picture in pictures {
         jsonBody.appendString("--\(boundary + lineBreak)")
-        jsonBody.appendString("Content-Disposition: form-data; picture\(picture + lineBreak)")
+        jsonBody.appendString("Content-Disposition: form-data; pictures=\(picture + lineBreak)")
         jsonBody.appendString(lineBreak)
         jsonBody.appendString(picture)
     }
-    print(jsonBody)
+    jsonBody.appendString("--\(boundary)--\(lineBreak)")
+    let str = String(decoding: jsonBody, as: UTF8.self)
+    print(str)
     request.httpBody = jsonBody
+    request.setValue(String(jsonBody.count), forHTTPHeaderField: "Content-Length")
     URLSession.shared.dataTask(with: request) { data, response, error in
         print(response!)
         guard let data = data else { return }
+        let str2 = String(decoding: data, as: UTF8.self)
+        print(str2)
         if let decoded = try? JSONDecoder().decode(ResponseSignup.self, from: data) {
             print(decoded)
             DispatchQueue.main.async {
