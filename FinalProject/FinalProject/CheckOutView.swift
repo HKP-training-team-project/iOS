@@ -62,11 +62,11 @@ struct CheckOutView: View {
                 case 2:
                     dataValues["itemname"]!.append("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)])
                 case 3:
-                    dataValues["price"]!.append(Double("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)]) ?? 0)
+                    dataValues["price"]!.append(Double("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)].replacingOccurrences(of: "\"", with: "")) ?? 0)
                 case 4:
                     dataValues["quantity"]!.append(Double("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)]) ?? 0)
                 default:
-                    dataValues["total"]!.append(Double("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)]) ?? 0)
+                    dataValues["total"]!.append(Double("\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index("\(String(describing: json["items"]!))".firstIndex(of: "=") ?? "\(String(describing: json["items"]!))".startIndex, offsetBy: 2))..<("\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".endIndex)].replacingOccurrences(of: "\"", with: "")) ?? 0)
                 }
                 json["items"] = "\(String(describing: json["items"]!))"[("\(String(describing: json["items"]!))".index(after: "\(String(describing: json["items"]!))".firstIndex(of: ";") ?? "\(String(describing: json["items"]!))".startIndex))..<"\(String(describing: json["items"]!))".endIndex]
                 count += 1
@@ -91,6 +91,13 @@ struct CheckOutView: View {
         return list
     }
 
+    func getDict(_ list1: [String], _ list2: [Double]) -> [String: Double] {
+        var dict = [String: Double]()
+        for index in 0..<list1.count {
+            dict[list1[index]] = list2[index]
+        }
+        return dict
+    }
     
     var body: some View {
         VStack(spacing: UIScreen.main.bounds.height / 64) {
@@ -110,7 +117,10 @@ struct CheckOutView: View {
                 Spacer()
             }
             Form {
-                ForEach(0..<getStringArray(dataValues["itemname"] ?? []).count) { index in
+                ForEach(getDict(getStringArray(dataValues["itemname"] ?? []), getDoubleArray(dataValues["total"] ?? [])) {
+                    
+                }
+                ForEach(0..<getStringArray(dataValues["itemname"] ?? []).count, id: \.self) { index in
                     HStack {
                         Text(getStringArray(dataValues["itemname"] ?? [])[index])
                         Spacer()
