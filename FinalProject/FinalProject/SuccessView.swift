@@ -44,7 +44,7 @@ struct SuccessView: View {
                         }
                     }
                     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 4, alignment: .center)
-                    Spacer()
+                    //Spacer()
                 }
             }
         }
