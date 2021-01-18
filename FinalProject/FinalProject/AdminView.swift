@@ -10,20 +10,16 @@ import SwiftUI
 struct AdminView: View {
     @ObservedObject var screen: CurrentScreen
     @ObservedObject var user: userJWT
-    
     @State var itemName = ""
     @State var itemPrice = ""
     @State var itemDesc = ""
     @State var itemCat = ""
     @State var itemPics = [String]()
-    
-    
     @State var showingAlert        = false
     @State var alertTitle          = ""
     @State var alertMessage        = ""
-    
-    
     @State var items = Items()
+    
     func start() {
         GETItemsList(jwt: user.JWT, completion: { _ in })
     }
@@ -70,16 +66,18 @@ struct AdminView: View {
                 RoundedRectangle(cornerRadius: 25)
                     .stroke(Color.black, lineWidth: 1)
                     .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
-                TextField("Item Name", text: $itemName)
+                TextField("Item Name: ", text: $itemName)
                     .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
+                    .autocapitalization(.none)
             }
             
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
                     .stroke(Color.black, lineWidth: 1)
                     .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
-                TextField("Item Price", text: $itemPrice)
+                TextField("Item Price: ", text: $itemPrice)
                     .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
+                    .autocapitalization(.none)
                 
             }
             
@@ -87,16 +85,18 @@ struct AdminView: View {
                 RoundedRectangle(cornerRadius: 25)
                     .stroke(Color.black, lineWidth: 1)
                     .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
-                TextField("Item Description", text: $itemDesc)
+                TextField("Item Description: ", text: $itemDesc)
                     .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
+                    .autocapitalization(.none)
             }
             
             ZStack {
                 RoundedRectangle(cornerRadius: 25)
                     .stroke(Color.black, lineWidth: 1)
                     .frame(width: UIScreen.main.bounds.width / 16 * 12, height: UIScreen.main.bounds.height / 24)
-                TextField("Item Category", text: $itemCat)
+                TextField("Item Category: ", text: $itemCat)
                     .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
+                    .autocapitalization(.none)
             }
             
             skyBlueButton("FINISH ADDING ITEM", width: UIScreen.main.bounds.width / 8 * 5, height: UIScreen.main.bounds.height / 24)
@@ -104,20 +104,16 @@ struct AdminView: View {
                     if (!itemName.isEmpty && !itemPrice.isEmpty) {
                         POSTItems(user.JWT, self.itemName, self.itemPrice, self.itemDesc, self.itemCat, self.itemPics) { (message) in
                             print("items added")
-                            alertTitle   = "ALERT"
                             alertMessage = message.description
                             showingAlert.toggle()
                         }
                     }
                     else {
                         print("could not add item")
-                        alertTitle   = "ALERT"
                         alertMessage = "Please fill in the blanks"
                         showingAlert.toggle()
                     }
                 }
-            
-            customButton("REMOVE ITEM", width: UIScreen.main.bounds.width / 8 * 5, height: UIScreen.main.bounds.height / 24, color: Color(#colorLiteral(red: 0, green: 0.9251735806, blue: 0.4800429344, alpha: 1)))
             Spacer()
             List{
                 ForEach(items.items, id: \.self) { item in
@@ -125,35 +121,27 @@ struct AdminView: View {
                         Text("\(item.itemname)")
                         Spacer()
                         whiteButton("Remove", width: UIScreen.main.bounds.width / 5, height: UIScreen.main.bounds.height / 36)
-                    }
-                        .onTapGesture {
-                            print("\n \n \n deleting ... \n \n \n")
-                            DELETEItem(user.JWT, item.id) { (message) in
-                                /*
+                            .onTapGesture {
+                                print("\n \n \n deleting ... \n \n \n")
+                                DELETEItem(user.JWT, item.id) { (message) in }
                                 print("deleted!")
-                                alertTitle   = "ALERT"
-                                alertMessage = message
+                                alertMessage = "Item deleted"
                                 showingAlert.toggle()
-                                */
+                                start()
+                                start()
                             }
-                            print("deleted!")
-                            alertTitle   = "ALERT"
-                            alertMessage = "Item deleted"
-                            showingAlert.toggle()
-                            start()
-                            start()
-                        }
+
+                    }
                 }
             }
-
-                Spacer()
-                customButton("Log Out", width: UIScreen.main.bounds.width / 5, height: UIScreen.main.bounds.height / 36, color: Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)))
-                    .onTapGesture {
-                        screen.currentScreen = 0
-                    }
+            Spacer()
+            customButton("Log Out", width: UIScreen.main.bounds.width / 5, height: UIScreen.main.bounds.height / 36, color: Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)))
+                .onTapGesture {
+                    screen.currentScreen = 0
+                }
         }
         .alert(isPresented: $showingAlert) {
-            Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            Alert(title: Text(alertMessage), message: nil, dismissButton: .default(Text("Dismiss")))
         }
         .onAppear(perform: start)
     }

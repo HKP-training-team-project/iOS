@@ -35,16 +35,13 @@ struct ShopView: View {
                     // completion(decoded.items[0].id)
                 }
             }
-            
         }.resume()
     }
-
-    
     
     var body: some View {
         NavigationView {
             Section {
-                HStack{
+                HStack {
                     Text("Hello, \(user.username)")
                         .font(.subheadline)
                         .foregroundColor(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
@@ -63,7 +60,8 @@ struct ShopView: View {
                                         Spacer()
                                         Text("$\(item.price, specifier: "%.2f")")
                                     }
-                                })
+                                }
+                            )
                         }
                     }
                 }
@@ -84,12 +82,3 @@ struct ShopView: View {
         .onAppear(perform: start)
     }
 }
-
-/*
-struct ShopView_Previews: PreviewProvider {
-    @ObservedObject var screen: CurrentScreen
-    static var previews: some View {
-        ShopView(user: UserData.example1, items: ItemServiceData.example, screen: screen )
-    }
-}
- */

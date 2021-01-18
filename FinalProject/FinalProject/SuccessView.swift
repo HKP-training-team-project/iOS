@@ -10,20 +10,15 @@ import SwiftUI
 struct SuccessView: View {
     @ObservedObject var screen: CurrentScreen
     var body: some View {
-        VStack{
-            ZStack{
+        VStack {
+            ZStack {
                 Rectangle()
                     .fill(Color.white)
-                VStack{
-                    ZStack{
+                VStack {
+                    ZStack {
                         customButton("",width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 4 ,color: Color.green)
-                        
-                        /*
-                        RoundedRectangle(cornerRadius: 25.0, style: .continuous)
-                            .fill(Color.green)
-                        */
                         VStack {
-                            ZStack{
+                            ZStack {
                                 Circle()
                                     .fill(Color.white)
                                     .frame(width: UIScreen.main.bounds.width / 32 * 5, height: UIScreen.main.bounds.width / 32 * 5, alignment: .top)
@@ -34,7 +29,7 @@ struct SuccessView: View {
                             .padding()
                             Spacer()
                         }
-                        VStack{
+                        VStack {
                             Text("Success!")
                                 .font(.largeTitle)
                                 .foregroundColor(Color(#colorLiteral(red: 0.9998918176, green: 1, blue: 0.9998806119, alpha: 1)))
@@ -53,7 +48,6 @@ struct SuccessView: View {
             
         }
         .onTapGesture {
-            print("tapped!")
             screen.currentScreen = 2
         }
     }

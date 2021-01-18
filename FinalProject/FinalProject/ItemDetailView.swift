@@ -10,6 +10,7 @@ import SwiftUI
 struct ItemDetailView: View {
     @State var user: userJWT
     @State var item: Item
+    @State var alertCart = false
     
     var body: some View {
         ScrollView{
@@ -30,20 +31,14 @@ struct ItemDetailView: View {
             customButton("Add to cart", width: UIScreen.main.bounds.width / 4)
                 .onTapGesture {
                     print("Attempting to add to cart")
-                    
-                    POSTCart(user.JWT, id: item.id, itemname: item.itemname, price: item.price, quantity: 1, userId: user.userID) { (message) in
+                    alertCart = true
+                    POSTCart(user.JWT, id: item.id, itemname: item.itemname, price: item.price, quantity: 2, userId: user.userID) { (message) in
                         print(message)
                     }
+                }
+                .alert(isPresented: $alertCart) {
+                    Alert(title: Text("Successfully added to cart"), message: nil, dismissButton: .default(Text("Dismiss")))
                 }
         )
     }
 }
-
-
-/*
-struct ItemDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        ItemDetailView(item: )
-    }
-}
- */

@@ -15,7 +15,6 @@ struct SignupView: View {
     @State var confirmPassword     = ""
     @State var secure              = true
     @State var showingAlertSignUp  = false
-    @State var alertTitle          = ""
     @State var alertMessage        = ""
     
     // makes sure the password has any 2 combinations of letters, digits, or special symbols
@@ -165,39 +164,28 @@ struct SignupView: View {
                 whiteButton("Back", width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 30)
                     .onTapGesture {
                         //Back to home screen
-                        screen.currentScreen = 0 //goes to menue screen
+                        screen.currentScreen = 0 
                     }
                 Spacer()
                 // attempts to signup
                 whiteButton("Sign Up", width: UIScreen.main.bounds.width / 5, height: UIScreen.main.bounds.height / 30)
                     .onTapGesture {
                         if (verifyPassword()){
-                            print("Signed Up")
                             signup(username: username, email: email , password: password, confirmPassword: confirmPassword) { (message) in
-                                alertTitle   = "ALERT"
                                 alertMessage = message.description
                                 showingAlertSignUp.toggle()
                             }
                         }
                         else {
-                            print("cannot sign in")
-                            alertTitle   = "Cannot Sign Up"
-                            alertMessage = "There was an error sign up"
+                            alertMessage = "There was an error signing up"
                             showingAlertSignUp.toggle()
                         }
                     }
             }
             .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 36)
             .alert(isPresented: $showingAlertSignUp){
-                Alert(title: Text(alertTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                Alert(title: Text(alertMessage), message: nil, dismissButton: .default(Text("OK")))
             }
         }
-    }
-}
-
-struct Signup_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        SignupView(screen: CurrentScreen())
     }
 }
