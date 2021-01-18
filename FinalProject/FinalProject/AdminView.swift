@@ -39,9 +39,6 @@ struct AdminView: View {
                 for item in items.items {
                     print(item.itemname)
                 }
-                DispatchQueue.main.async {
-                    // completion(decoded.items[0].id)
-                }
             }
             
         }.resume()
@@ -50,15 +47,13 @@ struct AdminView: View {
     var body: some View {
         Text("Welcome, \(user.username)")
             .padding()
-        customButton("ADD ITEM",width: 250, color: Color(#colorLiteral(red: 0, green: 0.9251735806, blue: 0.4800429344, alpha: 1)))
-            .padding()
         if itemName.count > 0 && itemPrice.count > 0 {
-            Text("\(itemName), \(itemPrice)")
+            Text("\(itemName) - $\(itemPrice)")
         }
         else if itemName.count < 0 {
             Text("\(itemPrice)")
         }
-        else if itemPrice.count < 0{
+        else if itemPrice.count < 0 {
             Text("\(itemName)")
         }
         VStack(spacing: UIScreen.main.bounds.height / 128) {
@@ -78,7 +73,6 @@ struct AdminView: View {
                 TextField("Item Price: ", text: $itemPrice)
                     .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 24)
                     .autocapitalization(.none)
-                
             }
             
             ZStack {
@@ -104,8 +98,9 @@ struct AdminView: View {
                     if (!itemName.isEmpty && !itemPrice.isEmpty) {
                         POSTItems(user.JWT, self.itemName, self.itemPrice, self.itemDesc, self.itemCat, self.itemPics) { (message) in
                             print("items added")
-                            alertMessage = message.description
+                            alertMessage = "Successfully added item"
                             showingAlert.toggle()
+                            start()
                         }
                     }
                     else {
@@ -115,7 +110,7 @@ struct AdminView: View {
                     }
                 }
             Spacer()
-            List{
+            List {
                 ForEach(items.items, id: \.self) { item in
                     HStack {
                         Text("\(item.itemname)")
@@ -127,7 +122,6 @@ struct AdminView: View {
                                 print("deleted!")
                                 alertMessage = "Item deleted"
                                 showingAlert.toggle()
-                                start()
                                 start()
                             }
 

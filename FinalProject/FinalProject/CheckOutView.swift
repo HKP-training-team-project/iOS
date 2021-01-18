@@ -93,8 +93,8 @@ struct CheckOutView: View {
 
     func getDict(_ list1: [String], _ list2: [Double]) -> [String: Double] {
         var dict = [String: Double]()
-        for index in 0..<list1.count {
-            if index > 0 {
+        while list1.count > 0 {
+            for index in 0..<list1.count {
                 dict[list1[index]] = list2[index]
             }
         }

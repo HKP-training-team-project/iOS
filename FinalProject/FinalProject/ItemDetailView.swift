@@ -32,7 +32,7 @@ struct ItemDetailView: View {
                 .onTapGesture {
                     print("Attempting to add to cart")
                     alertCart = true
-                    POSTCart(user.JWT, id: item.id, itemname: item.itemname, price: item.price, quantity: 2, userId: user.userID) { (message) in
+                    POSTCart(user.JWT, id: item.id, itemname: item.itemname, price: item.price, quantity: 1, userId: user.userID) { (message) in
                         print(message)
                     }
                 }
