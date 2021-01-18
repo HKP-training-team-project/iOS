@@ -104,39 +104,6 @@ struct LoginView: View {
                             }
                         }
                     }
-                
-                skyBlueButton("Guess Login", width: UIScreen.main.bounds.width / 4, height: UIScreen.main.bounds.height / 36)
-                    .onTapGesture {
-                        // login
-                        login1(email: "GuessUser1", password: "GuessUser1") { (result) in
-                            user.JWT = result.token
-                            user.username = result.user.username
-                            user.isAdmin  = result.user.isAdmin
-                            user.userID   = result.user.id
-                            if(user.isAdmin) {
-                                screen.currentScreen = 4
-                            }
-                            else {
-                                screen.currentScreen = 2
-                            }
-                        }
-                    }
-                skyBlueButton("Admin Login", width: UIScreen.main.bounds.width / 4, height: UIScreen.main.bounds.height / 36)
-                    .onTapGesture {
-                        // login
-                        login1(email: "admin@test.com", password: "admin") { (result) in
-                            user.JWT = result.token
-                            user.username = result.user.username
-                            user.isAdmin  = result.user.isAdmin
-                            user.userID   = result.user.id
-                            if(user.isAdmin) {
-                                screen.currentScreen = 4
-                            }
-                            else {
-                                screen.currentScreen = 2
-                            }
-                        }
-                    }
             }
             .frame(width: UIScreen.main.bounds.width / 16 * 11, height: UIScreen.main.bounds.height / 30)
             
